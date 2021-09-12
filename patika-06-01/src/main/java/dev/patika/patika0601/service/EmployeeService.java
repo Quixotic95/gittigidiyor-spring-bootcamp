@@ -19,8 +19,11 @@ public class EmployeeService {
 
     public void addEmployee(Employee employee) {
         // TO-DO check if employee exists???
-        repository.findEmployeeByEmail(employee.getEmail()).orElseThrow(() -> new RuntimeException("An Employee with this e-mail already exists."));
-        repository.save(employee);
+        if (repository.findEmployeeByEmail(employee.getEmail()).isPresent()) {
+            throw new RuntimeException("An Employee with this e-mail already exists.");
+        } else {
+            repository.save(employee);
+        }
     }
 
     public void deleteEmployee(Long employeeId) {
